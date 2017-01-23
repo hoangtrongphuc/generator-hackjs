@@ -1,35 +1,75 @@
 var Generator = require('yeoman-generator');
+const yosay = require('yosay');
 
 module.exports = class extends Generator {
-    // The name `constructor` is important here
-    constructor(args, opts) {
-        // Calling the super constructor is important so our generator is correctly set
-        // up
-        super(args, opts);
+  // The name `constructor` is important here
+  constructor(args, opts) {
+    // Calling the super constructor is important so our generator is correctly set
+    // up
+    super(args, opts);
+    this.log(yosay('Welcome to Hackjs! \n Minimalist, robust and fast web framework for node'));
 
-        // Next, add your custom code
-        this.option('babel'); // This method adds support for a `--babel` flag
-    }
-    prompting() {
-    return this.prompt([{
-      type    : 'input',
-      name    : 'name',
-      message : 'Your project name',
-      default : this.appname // Default to current folder name
-    }, {
-      type    : 'confirm',
-      name    : 'cool',
-      message : 'Would you like to enable the Cool feature?'
-    }]).then((answers) => {
-      this.log('app name', answers.name);
-      this.log('cool feature', answers.cool);
-    });
   }
-    method1() {
-        console.log('method 1 just ran');
+  prompting() {
+    var keys = {
+      GENERATE_PROJECT: 'Generate Hackjs Project',
+      GENERATE_CLIENT: 'Generate Hackjs React Client',
+      HACK_VERSION: 'Show Hackjs Version'
+    };
+  
+    var clients = this
+      .config
+      .get('clients');
+    var choices = new Array();
+    if (!this.config.get('version')) {
+      choices.push(keys.GENERATE_PROJECT);
     }
+    if (this.config.get('version')) {
+      choices.push(keys.GENERATE_CLIENT);
+    }
+    choices.push(keys.HACK_VERSION);
+    return this
+      .prompt([
+        {
+          type: 'list',
+          name: 'list',
+          message: 'What do you want to do?',
+          default: 0,
+          choices: choices
+        }
+      ])
+      .then(function (answers) {
+        var _this = this;
+        var done = this.async();
+        var answer = answers.list;
+        switch (answer) {
+          case keys.GENERATE_PROJECT:
+            this
+              .config
+              .set('version', require('../../package.json').version);
+            this
+              .composeWith('fireloop:server')
+              .on('end', function () {
+                _this
+                  .composeWith('fireloop:setup')
+                  .on('end', function () {
+                    return done();
+                  });
+              });
+            break;
+          case keys.GENERATE_CLIENT:
+            this
+              .composeWith('fireloop:ng2')
+              .on('end', function () {
+                done();
+              });
+            break;
+          case keys.HACK_VERSION:
+            var version = require('../../package.json').version;
+            this.log(chalk.blue("\nHackjs Version: " + version + "\n"));
+            break;
+        }
+      }.bind(this));
+  }
 
-    method2() {
-        console.log('method 2 just ran');
-    }
 };
