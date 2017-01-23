@@ -1,0 +1,29 @@
+{
+  "name": "generator-hackjs",
+  "version": "1.0.0",
+  "description": "A Yeoman generator for a Hackjs application",
+  "files": [
+    "generators"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoangtrongphuc/generator-hackjs.git"
+  },
+  "keywords": [
+    "yeoman-generator",
+    "hackjs"
+  ],
+  "author": {
+    "name": "phucht",
+    "email": "dr.hoangphuc@gmail.com",
+    "url": "http://mplbrother.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoangtrongphuc/generator-hackjs/issues"
+  },
+  "homepage": "https://github.com/hoangtrongphuc/generator-hackjs#readme",
+  "dependencies": {
+    "yeoman-generator": "^1.0.1"
+  }
+}
