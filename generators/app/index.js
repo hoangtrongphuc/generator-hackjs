@@ -1,24 +1,24 @@
-var Generator = require('yeoman-generator');
+const Generator = require('yeoman-generator');
 const yosay = require('yosay');
 const chalk = require('chalk');
-var path = require('path');
+const path = require('path');
 module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
     this.log(yosay('Welcome to Hackjs! \n Minimalist, robust and fast web framework for node'));
   }
-
   prompting() {
-    var keys = {
+    let _this = this;
+    let keys = {
       GENERATE_PROJECT: 'Generate Hackjs Project',
       GENERATE_CLIENT: 'Generate Hackjs React Client',
       HACK_VERSION: 'Show Hackjs Version'
     };
 
-    var clients = this
+    let clients = this
       .config
       .get('clients');
-    var choices = new Array();
+    let choices = new Array();
     choices.push(keys.GENERATE_PROJECT);
     choices.push(keys.GENERATE_CLIENT);
     choices.push(keys.HACK_VERSION);
@@ -33,10 +33,9 @@ module.exports = class extends Generator {
         }
       ])
       .then(function (answers) {
-        var _this = this;
-        var done = this.async();
-        var answer = answers.list;
-        switch (answer) {
+        let done = this.async();
+        let res = answers.list;
+        switch (res) {
           case keys.GENERATE_PROJECT:
             this
               .prompt([
@@ -48,22 +47,9 @@ module.exports = class extends Generator {
                 }
               ])
               .then(function (answer) {
-                this.log(chalk.green(`Create project "${answer.name}" in folder: ${this.destinationRoot()}`));
-                this
-                  .fs
-                  .copy([
-                    this.templatePath('hack/*'),
-                    this.templatePath('hack/services/*'),
-                    this.templatePath('hack/middlewares/*'),
-                    this.templatePath('hack/.*')
-                  ], this.destinationPath(answer.name));
-                // this.spawnCommand('npm', ['install']);
-                this
-                  .fs
-                  .copyTpl(this.templatePath('hack/package.json'), this.destinationPath(`${answer.name}/package.json`), {appname: answer.name});
-
-              }.bind(this));
-
+                _this.props = answer;
+                done();
+              }.bind(this)) 
             break;
           case keys.GENERATE_CLIENT:
             this
@@ -74,10 +60,28 @@ module.exports = class extends Generator {
             break;
           case keys.HACK_VERSION:
             var version = require('../../package.json').version;
-            this.log(chalk.green("\nHackjs Version: " + version + "\n"));
+            this.log(chalk.yellow("Hackjs Version: " + version));
             break;
         }
       }.bind(this));
   }
-
+  writing() {
+    this.log(chalk.green(`Create project "${this.props.name}" in folder: ${this.destinationRoot()}`));
+    // Copy config
+    this
+      .fs
+      .copyTpl(this.templatePath('hack/package.json'), this.destinationPath(`${this.props.name}/package.json`), {appname: this.props.name});
+    // Copy folders and files
+    this
+      .fs
+      .copy([
+        this.templatePath('hack/*'),
+        this.templatePath('hack/services/*'),
+        this.templatePath('hack/middlewares/*'),
+        this.templatePath('hack/.*')
+      ], this.destinationPath(this.props.name))
+  }
+  install() {
+    this.npmInstall();
+  }
 };

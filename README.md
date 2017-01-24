@@ -2,6 +2,9 @@
 
 > A Yeoman generator for a Hackjs application
 
+
+## Note
+This project is under development, we're working in hackjs core. Project maybe completed in April 2017. 
 ## Installation
 
 First you need install [yeoman](http://yeoman.io/).
@@ -35,41 +38,6 @@ Start your brand new app! 💥
 ```bash
 npm start
 ```
-
-## Available commands
-
-```bash
-# short alias for generate new application
-yo hack
-
-# generate new application
-yo hack:app
-
-# generate new hook
-yo hack:hook
-
-# generate new middleware
-yo hack:middleware
-
-# generate new model
-yo hack:model
-
-# generate new service
-yo hack:service
-```
-
-## Contributing
-
-To contribute PRs for these generators, you will need to clone the repo
-then inside the repo's directory, run `npm link`. This sets up a global
-link to your local package for running tests (`npm test`) and generating
-new feathers apps/services/hooks/etc.
-
-When finished testing, optionally run `npm uninstall generator-hackjs` to remove
-the link.
-
-
-## Changelog
 
 
 ## License
