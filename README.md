@@ -4,7 +4,7 @@
 
 
 ## Note
-This project is under development, we're working in hackjs core. Project maybe completed in April 2017. 
+This project is under development, we're working in hackjs core. Project maybe completed in April 2017.   
 ## Installation
 
 First you need install [yeoman](http://yeoman.io/).
@@ -16,7 +16,7 @@ npm install -g yo
 Then install the hackjs generator.
 
 ```bash
-npm install -g yo generator-hackjs
+yo generator-hackjs
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ mkdir my-new-app; cd my-new-app/
 Generate your app and follow the prompts.
 
 ```bash
-yo hack
+yo hackjs
 ```
 
 Start your brand new app! 💥
